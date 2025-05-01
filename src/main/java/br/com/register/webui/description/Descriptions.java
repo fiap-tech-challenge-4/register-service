@@ -34,8 +34,8 @@ public class Descriptions {
     public static final String CATEGORIA_PRODUTO = "Category associated with the product";
     public static final String CATEGORIA_ID = "Unique identifier of the category";
     public static final String IMAGEM_PRODUTO = "Image to display the product";
-    public static final String DESCRICAO_FORMA_PAGAMENTO = "Description of the payment method";
-    public static final String TIPO_PAGAMENTO_FORMA_PAGAMENTO = "Type of payment method. Allowed values: [\"DEBITO\", \"CREDITO\", \"PIX\"]";
+    public static final String DESCRIPTION_PAYMENT_METHOD = "Description of the payment method";
+    public static final String PAYMENT_TYPE_PAYMENT_METHOD = "Type of payment method. Allowed values: [\"DEBITO\", \"CREDITO\", \"PIX\"]";
     public static final String LISTA_ITENS_PEDIDO = "List of items in the order";
     public static final String QTD_PRODUTO = "Quantity of products";
     public static final String DATA_PEDIDO = "Date when the order was placed. Format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";

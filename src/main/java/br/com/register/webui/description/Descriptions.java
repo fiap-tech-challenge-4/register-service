@@ -26,10 +26,10 @@ public class Descriptions {
     public static final String ID_CLIENTE = "Unique identifier of the client";
     public static final String ID_EMPRESA = "Unique identifier of the company";
     public static final String OBSERVACAO = "Free-text field for order notes";
-    public static final String NOME_CLIENTE = "Client name";
-    public static final String CPF_CLIENTE = "Client CPF (Brazilian ID)";
-    public static final String TELEFONE_CLIENTE = "Phone number";
-    public static final String EMAIL_CLIENTE = "Client's email address";
+    public static final String NAME_CUSTOMER = "Client name";
+    public static final String CPF_CUSTOMER = "Client CPF (Brazilian ID)";
+    public static final String PHONE_CUSTOMER = "Phone number";
+    public static final String EMAIL_CUSTOMER = "Client's email address";
     public static final String VLR_UNITARIO_PRODUTO = "Unit price of the product";
     public static final String CATEGORIA_PRODUTO = "Category associated with the product";
     public static final String CATEGORIA_ID = "Unique identifier of the category";

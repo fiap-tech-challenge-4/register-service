@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static br.com.register.errors.Errors.CAMPO_REQUERIDO;
+import static br.com.register.errors.Errors.FIELD_REQUIRED;
 import static br.com.register.webui.description.Descriptions.DESCRIPTION_CATEGORY;
 
 @Data
@@ -17,7 +17,7 @@ import static br.com.register.webui.description.Descriptions.DESCRIPTION_CATEGOR
 public class RegisterCategoryRequest {
 
     @Schema(description = DESCRIPTION_CATEGORY)
-    @NotBlank(message = CAMPO_REQUERIDO)
+    @NotBlank(message = FIELD_REQUIRED)
     private String description;
 
 }

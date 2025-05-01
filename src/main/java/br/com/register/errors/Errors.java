@@ -3,7 +3,7 @@ package br.com.register.errors;
 public class Errors {
 
     // GENERIC
-    public static final String CAMPO_REQUERIDO = "Field is required";
+    public static final String FIELD_REQUIRED = "Field is required";
     public static final String QUERY_PARAMS_REQUERIDO = "Parameter is required";
     public static final String VALOR_MAIOR_QUE_0 = "The value must be greater than zero";
 
@@ -15,8 +15,8 @@ public class Errors {
     // Product
     public static final String VLR_UNITARIO_FORMATO_INVALIDO = "Unit price must have a maximum of 10 integer digits and 2 decimal places";
     public static final String CATEGORY_NOT_EXISTS = "The specified category does not exist";
-    public static final String CLIENTE_EXISTE = "The provided CPF is already registered";
-    public static final String CLIENTE_NAO_EXISTE = "Client not found";
+    public static final String CUSTOMER_EXISTS = "The provided CPF is already registered";
+    public static final String CUSTOMER_NOT_EXISTS = "Client not found";
     public static final String PRODUTO_NAO_ENCONTRADO = "Product not found";
     public static final String PEDIDO_NAO_ENCONTRADO = "Order not found";
     public static final String FORMA_PAGAMENTO_NAO_ENCONTRADO = "Payment method not found";

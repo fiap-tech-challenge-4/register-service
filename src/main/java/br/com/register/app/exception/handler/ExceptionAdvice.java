@@ -60,7 +60,7 @@ public class ExceptionAdvice {
         });
 
         return new ResponseEntity<>(ErrorResponse.builder()
-                .path(uri != null ? uri.substring(4) : null)
+                .path(uri.substring(4))
                 .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")))
                 .message("Validation field with error")
                 .httpCode(HttpStatus.BAD_REQUEST.value())
@@ -75,7 +75,7 @@ public class ExceptionAdvice {
 
         String uri = request.getDescription(false);
         List<ErrorField> errorList = new ArrayList<>();
-        ex.getConstraintViolations().stream().forEach(e -> {
+        ex.getConstraintViolations().forEach(e -> {
             var error = ErrorField.builder()
                     .field(String.valueOf(e.getPropertyPath().toString().split("\\.")[1]))
                     .message(e.getMessage())
@@ -84,7 +84,7 @@ public class ExceptionAdvice {
         });
 
         return new ResponseEntity<>(ErrorResponse.builder()
-                .path(uri != null ? uri.substring(4) : null)
+                .path(uri.substring(4))
                 .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")))
                 .message("Validation field with error")
                 .httpCode(HttpStatus.BAD_REQUEST.value())
@@ -98,7 +98,7 @@ public class ExceptionAdvice {
         String message = ex.getMessage();
         String uri = request.getDescription(false);
         return new ResponseEntity<>(ErrorResponse.builder()
-                .path(uri != null ? uri.substring(4) : null)
+                .path(uri.substring(4))
                 .message(message)
                 .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")))
                 .httpCode(httpStatus.value())

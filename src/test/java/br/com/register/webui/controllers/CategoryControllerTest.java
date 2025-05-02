@@ -1,7 +1,6 @@
 package br.com.register.webui.controllers;
 
 import br.com.register.app.usecases.CategoryUseCase;
-import br.com.register.errors.Errors;
 import br.com.register.webui.dtos.CategoryDTO;
 import br.com.register.webui.dtos.request.RegisterCategoryRequest;
 import br.com.register.webui.dtos.request.UpdateCategoryRequest;
@@ -23,7 +22,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.Set;
@@ -31,7 +29,6 @@ import java.util.Set;
 import static br.com.register.errors.Errors.FIELD_REQUIRED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;

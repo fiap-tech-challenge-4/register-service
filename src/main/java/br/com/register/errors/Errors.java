@@ -13,11 +13,11 @@ public class Errors {
     public static final String EMPRESA_NAO_ENCONTRADA = "Company not found";
 
     // Product
-    public static final String VLR_UNITARIO_FORMATO_INVALIDO = "Unit price must have a maximum of 10 integer digits and 2 decimal places";
-    public static final String CATEGORY_NOT_EXISTS = "The specified category does not exist";
+    public static final String UNIT_AMOUNT_FORMAT_INVALID = "Unit price must have a maximum of 10 integer digits and 2 decimal places";
+    public static final String CATEGORY_NOT_EXISTS = "Category does not exist";
     public static final String CUSTOMER_EXISTS = "The provided CPF is already registered";
     public static final String CUSTOMER_NOT_EXISTS = "Client not found";
-    public static final String PRODUTO_NAO_ENCONTRADO = "Product not found";
+    public static final String PRODUCT_NOT_FOUND = "Product not found";
     public static final String PEDIDO_NAO_ENCONTRADO = "Order not found";
     public static final String FORMA_PAGAMENTO_NAO_ENCONTRADO = "Payment method not found";
 

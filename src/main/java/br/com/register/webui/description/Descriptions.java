@@ -20,7 +20,7 @@ public class Descriptions {
     public static final String PAGE = "Page number";
     public static final String LIMIT = "Number of records per page";
     public static final String SORT = "Sorting order of the list";
-    public static final String DESCRICAO_PRODUTO = "Product description";
+    public static final String DESCRIPTION_PRODUCT = "Product description";
     public static final String DESCRIPTION_CATEGORY = "Category description";
     public static final String ID_PRODUTO = "Unique identifier of the product";
     public static final String ID_CLIENTE = "Unique identifier of the client";
@@ -30,10 +30,10 @@ public class Descriptions {
     public static final String CPF_CUSTOMER = "Client CPF (Brazilian ID)";
     public static final String PHONE_CUSTOMER = "Phone number";
     public static final String EMAIL_CUSTOMER = "Client's email address";
-    public static final String VLR_UNITARIO_PRODUTO = "Unit price of the product";
-    public static final String CATEGORIA_PRODUTO = "Category associated with the product";
-    public static final String CATEGORIA_ID = "Unique identifier of the category";
-    public static final String IMAGEM_PRODUTO = "Image to display the product";
+    public static final String UNIT_PRICE_PRODUCT = "Unit price of the product";
+    public static final String CATEGORY_PRODUCT = "Category associated with the product";
+    public static final String CATEGORY_ID = "Unique identifier of the category";
+    public static final String IMAGE_PRODUCT = "Image to display the product";
     public static final String DESCRIPTION_PAYMENT_METHOD = "Description of the payment method";
     public static final String PAYMENT_TYPE_PAYMENT_METHOD = "Type of payment method. Allowed values: [\"DEBITO\", \"CREDITO\", \"PIX\"]";
     public static final String LISTA_ITENS_PEDIDO = "List of items in the order";

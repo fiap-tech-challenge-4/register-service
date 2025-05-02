@@ -109,7 +109,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "200", description = "Search list completed sucessfully",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PaginationCategoryResponse.class))})})
     @GetMapping("/list")
-    public ResponseEntity<PaginationResponse<CategoryResponse>> listarCategorias(
+    public ResponseEntity<PaginationResponse<CategoryResponse>> listCategories(
             @Parameter(description = PAGE)
             @RequestParam(required = false, defaultValue = "1")
             @Min(value = 1, message = PAGE_MIN)

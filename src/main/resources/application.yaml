@@ -7,4 +7,4 @@ spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://ep-steep-tree-a4v8d313.us-east-1.aws.neon.tech/register}
     username: ${SPRING_DATASOURCE_USERNAME:username}
-    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    password: ${SPRING_DATASOURCE_PASSWORD:password} 

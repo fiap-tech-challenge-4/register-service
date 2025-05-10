@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: register-service-app
+  labels:
+    app: register-service-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: register-service-app
+  template:
+    metadata:
+      labels:
+        app: register-service-app
+    spec:
+      containers:
+        - name: app
+          image: 960757163041.dkr.ecr.us-east-1.amazonaws.com/register-service:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: register-service-config
+          resources:
+            requests:
+              cpu: "500m"
+            limits:
+              cpu: "1000m"

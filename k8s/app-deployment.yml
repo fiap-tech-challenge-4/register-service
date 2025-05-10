@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: 791691623793.dkr.ecr.us-east-1.amazonaws.com/register-service:latest
+          image: 960757163041.dkr.ecr.us-east-1.amazonaws.com/register-service:latest
           ports:
             - containerPort: 8080
           envFrom:

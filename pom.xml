@@ -147,7 +147,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>br.com.payment.Startup</mainClass>
+                            <mainClass>br.com.register.Startup</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

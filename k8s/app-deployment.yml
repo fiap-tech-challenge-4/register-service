@@ -24,3 +24,14 @@ spec:
               cpu: "500m"
             limits:
               cpu: "1000m"
+          env:
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: register-service-secrets
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: register-service-secrets
+                  key: SPRING_DATASOURCE_PASSWORD

@@ -1,13 +1,12 @@
 package br.com.register.webui.controllers;
 
 import br.com.register.app.usecases.CategoryUseCase;
-import br.com.register.webui.dtos.request.UpdateCategoryRequest;
 import br.com.register.webui.dtos.request.RegisterCategoryRequest;
+import br.com.register.webui.dtos.request.UpdateCategoryRequest;
 import br.com.register.webui.dtos.response.CategoryResponse;
 import br.com.register.webui.dtos.response.ErrorResponse;
 import br.com.register.webui.dtos.response.PaginationCategoryResponse;
 import br.com.register.webui.dtos.response.PaginationResponse;
-import br.com.register.webui.mappers.CategoryMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static br.com.register.errors.Errors.PAGE_MIN;
+import static br.com.register.webui.converters.CategoryConvert.toCategoryDto;
 import static br.com.register.webui.description.Descriptions.ID;
 import static br.com.register.webui.description.Descriptions.LIMIT;
 import static br.com.register.webui.description.Descriptions.PAGE;
@@ -51,7 +51,6 @@ public class CategoryController {
     private static final String ASC_DESC = "ASC/DESC";
 
     private final CategoryUseCase categoryUseCase;
-    private final CategoryMapper categoryMapper;
 
     @Operation(summary = "Register category")
     @ApiResponses(value = {
@@ -61,7 +60,7 @@ public class CategoryController {
     public ResponseEntity<CategoryResponse> registerCategory(@RequestBody @Valid RegisterCategoryRequest request) {
         return ResponseEntity
                 .status(CREATED)
-                .body(categoryUseCase.registerCategory(categoryMapper.toCategoryDto(request)));
+                .body(categoryUseCase.registerCategory(toCategoryDto(request)));
     }
 
     @Operation(summary = "Update category")
@@ -75,7 +74,7 @@ public class CategoryController {
             final Long id,
             @RequestBody @Valid
             final UpdateCategoryRequest request) {
-        var categoryDTO = categoryMapper.toCategoryDto(request);
+        var categoryDTO = toCategoryDto(request);
         return ResponseEntity.ok(categoryUseCase.updateCategory(id, categoryDTO));
     }
 

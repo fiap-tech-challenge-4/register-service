@@ -14,8 +14,8 @@ import static br.com.register.webui.description.Descriptions.DESCRIPTION_CATEGOR
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateCategoryRequest {
 
+public class UpdateCategoryRequest {
     @Schema(description = DESCRIPTION_CATEGORY)
     @NotBlank(message = FIELD_REQUIRED)
     private String description;

@@ -1,13 +1,12 @@
 package br.com.register.webui.controllers;
 
 import br.com.register.app.usecases.ProductUseCase;
-import br.com.register.webui.dtos.request.UpdateProductRequest;
 import br.com.register.webui.dtos.request.RegisterProductRequest;
+import br.com.register.webui.dtos.request.UpdateProductRequest;
 import br.com.register.webui.dtos.response.ErrorResponse;
 import br.com.register.webui.dtos.response.PaginationProductResponse;
 import br.com.register.webui.dtos.response.PaginationResponse;
 import br.com.register.webui.dtos.response.ProductResponse;
-import br.com.register.webui.mappers.ProductMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static br.com.register.errors.Errors.PAGE_MIN;
+import static br.com.register.webui.converters.ProductConvert.toProductDto;
 import static br.com.register.webui.description.Descriptions.CATEGORY_ID;
 import static br.com.register.webui.description.Descriptions.ID;
 import static br.com.register.webui.description.Descriptions.LIMIT;
@@ -52,7 +52,6 @@ public class ProductController {
     private static final String ASC_DESC = "ASC/DESC";
 
     private final ProductUseCase productUseCase;
-    private final ProductMapper productMapper;
 
     @Operation(summary = "Register product")
     @ApiResponses(value = {
@@ -62,7 +61,7 @@ public class ProductController {
     public ResponseEntity<ProductResponse> registerProduct(@RequestBody @Valid RegisterProductRequest request) {
         return ResponseEntity
                 .status(CREATED)
-                .body(productUseCase.registerProduct(productMapper.toProductDto(request)));
+                .body(productUseCase.registerProduct(toProductDto(request)));
     }
 
     @Operation(summary = "Update product")
@@ -76,7 +75,7 @@ public class ProductController {
             final Long id,
             @RequestBody @Valid
             final UpdateProductRequest request) {
-        var productDTO = productMapper.toProductDto(request);
+        var productDTO = toProductDto(request);
         return ResponseEntity.ok(productUseCase.updateProduct(id, productDTO));
     }
 

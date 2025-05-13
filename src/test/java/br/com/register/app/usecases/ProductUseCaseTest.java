@@ -9,14 +9,12 @@ import br.com.register.webui.dtos.ProductDTO;
 import br.com.register.webui.dtos.response.CategoryResponse;
 import br.com.register.webui.dtos.response.PaginationResponse;
 import br.com.register.webui.dtos.response.ProductResponse;
-import br.com.register.webui.mappers.ProductMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,10 +26,11 @@ import java.util.Optional;
 
 import static br.com.register.errors.Errors.CATEGORY_NOT_EXISTS;
 import static br.com.register.errors.Errors.PRODUCT_NOT_FOUND;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,8 +42,6 @@ public class ProductUseCaseTest {
     private ProductUseCase productUseCase;
     @Mock
     private ProductRepository productRepository;
-    @Mock
-    private ProductMapper productMapper;
     @Mock
     private CategoryRepository categoryRepository;
 
@@ -82,10 +79,8 @@ public class ProductUseCaseTest {
 
     @Test
     public void testRegisterProductSuccess() {
-        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
-        when(productMapper.toEntity(productDTO)).thenReturn(product);
-        when(productRepository.save(product)).thenReturn(product);
-        when(productMapper.toProductResponse(product)).thenReturn(productResponse);
+        when(categoryRepository.findById(any())).thenReturn(Optional.of(category));
+        when(productRepository.save(any())).thenReturn(product);
 
         ProductResponse result = productUseCase.registerProduct(productDTO);
 
@@ -95,7 +90,7 @@ public class ProductUseCaseTest {
 
     @Test
     public void testRegisterProductCategoryNotFound() {
-        when(categoryRepository.findById(1L)).thenReturn(Optional.empty());
+        when(categoryRepository.findById(any())).thenReturn(Optional.empty());
 
         BusinessException ex = assertThrows(BusinessException.class, () -> {
             productUseCase.registerProduct(productDTO);
@@ -109,7 +104,6 @@ public class ProductUseCaseTest {
         var page = new PageImpl<>(List.of(product), pageable, 1L);
 
         when(productRepository.findAll(any(Pageable.class))).thenReturn(page);
-        when(productMapper.toResponseList(anyList())).thenReturn(List.of(productResponse));
 
         PaginationResponse<ProductResponse> response = productUseCase.listProducts(0, 10, "asc");
 
@@ -119,11 +113,9 @@ public class ProductUseCaseTest {
 
     @Test
     public void testUpdateProductSuccess() {
-        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
-        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
-        when(productMapper.toEntity(productDTO)).thenReturn(product);
-        when(productRepository.save(product)).thenReturn(product);
-        when(productMapper.toProductResponse(product)).thenReturn(productResponse);
+        when(productRepository.findById(any())).thenReturn(Optional.of(product));
+        when(categoryRepository.findById(any())).thenReturn(Optional.of(category));
+        when(productRepository.save(any())).thenReturn(product);
 
         ProductResponse response = productUseCase.updateProduct(1L, productDTO);
 
@@ -133,7 +125,7 @@ public class ProductUseCaseTest {
 
     @Test
     public void testUpdateProductNotFound() {
-        when(productRepository.findById(1L)).thenReturn(Optional.empty());
+        when(productRepository.findById(any())).thenReturn(Optional.empty());
 
         BusinessException ex = assertThrows(BusinessException.class, () -> {
             productUseCase.updateProduct(1L, productDTO);
@@ -144,8 +136,8 @@ public class ProductUseCaseTest {
 
     @Test
     public void testUpdateProductCategoryNotFound() {
-        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
-        when(categoryRepository.findById(1L)).thenReturn(Optional.empty());
+        when(productRepository.findById(any())).thenReturn(Optional.of(product));
+        when(categoryRepository.findById(any())).thenReturn(Optional.empty());
 
         BusinessException ex = assertThrows(BusinessException.class, () -> {
             productUseCase.updateProduct(1L, productDTO);
@@ -156,7 +148,7 @@ public class ProductUseCaseTest {
 
     @Test
     public void testDeleteProductSuccess() {
-        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+        when(productRepository.findById(any())).thenReturn(Optional.of(product));
 
         assertDoesNotThrow(() -> productUseCase.deleteProduct(1L));
         verify(productRepository, times(1)).delete(product);
@@ -164,7 +156,7 @@ public class ProductUseCaseTest {
 
     @Test
     public void testDeleteProductNotFound() {
-        when(productRepository.findById(1L)).thenReturn(Optional.empty());
+        when(productRepository.findById(any())).thenReturn(Optional.empty());
 
         BusinessException ex = assertThrows(BusinessException.class, () -> {
             productUseCase.deleteProduct(1L);
@@ -175,8 +167,7 @@ public class ProductUseCaseTest {
 
     @Test
     public void testSearchProductByIdSuccess() {
-        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
-        when(productMapper.toProductResponse(product)).thenReturn(productResponse);
+        when(productRepository.findById(any())).thenReturn(Optional.of(product));
 
         ProductResponse response = productUseCase.searchProductById(1L);
 
@@ -186,7 +177,7 @@ public class ProductUseCaseTest {
 
     @Test
     public void testSearchProductByIdNotFound() {
-        when(productRepository.findById(1L)).thenReturn(Optional.empty());
+        when(productRepository.findById(any())).thenReturn(Optional.empty());
 
         BusinessException ex = assertThrows(BusinessException.class, () -> {
             productUseCase.searchProductById(1L);
@@ -200,8 +191,7 @@ public class ProductUseCaseTest {
         var pageable = PageRequest.of(0, 10, Sort.by("id"));
         var page = new PageImpl<>(List.of(product), pageable, 1L);
 
-        when(productRepository.findByCategoryId(1L, pageable)).thenReturn(page);
-        when(productMapper.toResponseList(anyList())).thenReturn(List.of(productResponse));
+        when(productRepository.findByCategoryId(any(), any())).thenReturn(page);
 
         PaginationResponse<ProductResponse> response = productUseCase.searchProductsByCategory(0, 10, "asc", 1L);
 

@@ -9,7 +9,6 @@ import br.com.register.utils.Pagination;
 import br.com.register.webui.dtos.ProductDTO;
 import br.com.register.webui.dtos.response.PaginationResponse;
 import br.com.register.webui.dtos.response.ProductResponse;
-import br.com.register.webui.mappers.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,9 @@ import java.util.List;
 
 import static br.com.register.errors.Errors.CATEGORY_NOT_EXISTS;
 import static br.com.register.errors.Errors.PRODUCT_NOT_FOUND;
+import static br.com.register.webui.converters.ProductConvert.toEntity;
+import static br.com.register.webui.converters.ProductConvert.toProductResponse;
+import static br.com.register.webui.converters.ProductConvert.toResponseList;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @Service
@@ -25,23 +27,22 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 public class ProductUseCase {
 
     private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
 
     public ProductResponse registerProduct(ProductDTO productDTO) {
         var category = getCategory(productDTO.getCategoryId());
 
-        var entity = productMapper.toEntity(productDTO);
+        var entity = toEntity(productDTO);
         entity.setCategory(category);
         var entityResponse = productRepository.save(entity);
 
-        return productMapper.toProductResponse(entityResponse);
+        return toProductResponse(entityResponse);
     }
 
     public PaginationResponse<ProductResponse> listProducts(Integer page, Integer limit, String sort) {
         var pageable = Pagination.getPageRequest(limit, page, sort, "id");
         var products = productRepository.findAll(pageable);
-        List<ProductResponse> listProductResponse = productMapper.toResponseList(products.getContent());
+        List<ProductResponse> listProductResponse = toResponseList(products.getContent());
         return new PaginationResponse<>().convertToResponse(new PageImpl(listProductResponse, products.getPageable(), 0L));
     }
 
@@ -49,11 +50,11 @@ public class ProductUseCase {
         getProduct(id);
         var category = getCategory(productDTO.getCategoryId());
 
-        Product entity = productMapper.toEntity(productDTO);
+        Product entity = toEntity(productDTO);
         entity.setId(id);
         entity.setCategory(category);
         Product entityResponse = productRepository.save(entity);
-        return productMapper.toProductResponse(entityResponse);
+        return toProductResponse(entityResponse);
     }
 
     public void deleteProduct(Long id) {
@@ -62,13 +63,13 @@ public class ProductUseCase {
     }
 
     public ProductResponse searchProductById(Long id) {
-        return productMapper.toProductResponse(getProduct(id));
+        return toProductResponse(getProduct(id));
     }
 
     public PaginationResponse<ProductResponse> searchProductsByCategory(Integer page, Integer limit, String sort, Long categoriaId) {
         var pageable = Pagination.getPageRequest(limit, page, sort, "id");
         var products = productRepository.findByCategoryId(categoriaId, pageable);
-        List<ProductResponse> listProductResponse = productMapper.toResponseList(products.getContent());
+        List<ProductResponse> listProductResponse = toResponseList(products.getContent());
         return new PaginationResponse<>().convertToResponse(new PageImpl(listProductResponse, products.getPageable(), 0L));
     }
 

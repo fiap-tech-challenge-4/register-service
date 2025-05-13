@@ -6,14 +6,12 @@ import br.com.register.app.repositories.CustomerRepository;
 import br.com.register.webui.dtos.CustomerDTO;
 import br.com.register.webui.dtos.response.CustomerResponse;
 import br.com.register.webui.dtos.response.PaginationResponse;
-import br.com.register.webui.mappers.CustomerMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,8 +38,6 @@ public class CustomerUseCaseTest {
     private CustomerUseCase customerUseCase;
     @Mock
     private CustomerRepository customerRepository;
-    @Mock
-    private CustomerMapper customerMapper;
 
     private Customer customer;
     private CustomerDTO customerDTO;
@@ -74,10 +69,8 @@ public class CustomerUseCaseTest {
 
     @Test
     public void testRegisterCustomerSuccess() {
-        when(customerRepository.findByCpf(customerDTO.getCpf())).thenReturn(null);
-        when(customerMapper.toEntity(customerDTO)).thenReturn(customer);
-        when(customerRepository.save(customer)).thenReturn(customer);
-        when(customerMapper.toCustomerResponse(customer)).thenReturn(customerResponse);
+        when(customerRepository.findByCpf(any())).thenReturn(null);
+        when(customerRepository.save(any())).thenReturn(customer);
 
         CustomerResponse response = customerUseCase.registerCustomer(customerDTO);
 
@@ -87,7 +80,7 @@ public class CustomerUseCaseTest {
 
     @Test
     public void testRegisterCustomerAlreadyExists() {
-        when(customerRepository.findByCpf(customerDTO.getCpf())).thenReturn(customer);
+        when(customerRepository.findByCpf(any())).thenReturn(customer);
 
         var exception = assertThrows(BusinessException.class, () -> customerUseCase.registerCustomer(customerDTO));
         assertEquals(CUSTOMER_EXISTS, exception.getMessage());
@@ -95,9 +88,8 @@ public class CustomerUseCaseTest {
 
     @Test
     public void testUpdateCustomerSuccess() {
-        when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
-        when(customerRepository.save(customer)).thenReturn(customer);
-        when(customerMapper.toCustomerResponse(customer)).thenReturn(customerResponse);
+        when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
+        when(customerRepository.save(any())).thenReturn(customer);
 
         CustomerResponse response = customerUseCase.updateCustomer(1L, customerDTO);
 
@@ -107,7 +99,7 @@ public class CustomerUseCaseTest {
 
     @Test
     public void testDeleteCustomerSuccess() {
-        when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
+        when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
 
         assertDoesNotThrow(() -> customerUseCase.deleteCustomer(1L));
         verify(customerRepository, times(1)).delete(customer);
@@ -115,8 +107,7 @@ public class CustomerUseCaseTest {
 
     @Test
     public void testSearchCustomerByIdSuccess() {
-        when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
-        when(customerMapper.toCustomerResponse(customer)).thenReturn(customerResponse);
+        when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
 
         CustomerResponse response = customerUseCase.searchCustomerById(1L);
 
@@ -126,7 +117,7 @@ public class CustomerUseCaseTest {
 
     @Test
     public void testSearchCustomerByIdNotFound() {
-        when(customerRepository.findById(1L)).thenReturn(Optional.empty());
+        when(customerRepository.findById(any())).thenReturn(Optional.empty());
 
         var exception = assertThrows(BusinessException.class, () -> customerUseCase.searchCustomerById(1L));
         assertEquals(CUSTOMER_NOT_EXISTS, exception.getMessage());
@@ -134,8 +125,7 @@ public class CustomerUseCaseTest {
 
     @Test
     public void testSearchCustomerByCpfSuccess() {
-        when(customerRepository.findByCpf(customerDTO.getCpf())).thenReturn(customer);
-        when(customerMapper.toCustomerResponse(customer)).thenReturn(customerResponse);
+        when(customerRepository.findByCpf(any())).thenReturn(customer);
 
         CustomerResponse response = customerUseCase.searchCustomer(customerDTO.getCpf());
 
@@ -145,7 +135,7 @@ public class CustomerUseCaseTest {
 
     @Test
     public void testSearchCustomerByCpfNotFound() {
-        when(customerRepository.findByCpf(customerDTO.getCpf())).thenReturn(null);
+        when(customerRepository.findByCpf(any())).thenReturn(null);
 
         var exception = assertThrows(BusinessException.class, () -> customerUseCase.searchCustomer(customerDTO.getCpf()));
         assertEquals(CUSTOMER_NOT_EXISTS, exception.getMessage());
@@ -157,7 +147,6 @@ public class CustomerUseCaseTest {
         var page = new PageImpl<>(List.of(customer), pageable, 1L);
 
         when(customerRepository.findAll(any(Pageable.class))).thenReturn(page);
-        when(customerMapper.toResponseList(anyList())).thenReturn(List.of(customerResponse));
 
         PaginationResponse<CustomerResponse> response = customerUseCase.listCustomers(0, 10, "asc");
 

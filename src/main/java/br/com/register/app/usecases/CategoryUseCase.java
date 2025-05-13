@@ -7,7 +7,6 @@ import br.com.register.utils.Pagination;
 import br.com.register.webui.dtos.CategoryDTO;
 import br.com.register.webui.dtos.response.CategoryResponse;
 import br.com.register.webui.dtos.response.PaginationResponse;
-import br.com.register.webui.mappers.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static br.com.register.errors.Errors.CATEGORY_NOT_EXISTS;
+import static br.com.register.webui.converters.CategoryConvert.toCategoryResponse;
+import static br.com.register.webui.converters.CategoryConvert.toEntity;
+import static br.com.register.webui.converters.CategoryConvert.toResponseList;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @Service
@@ -22,13 +24,12 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 public class CategoryUseCase {
 
     private final CategoryRepository categoryRepository;
-    private final CategoryMapper categoryMapper;
 
     public CategoryResponse registerCategory(CategoryDTO categoria) {
-        var entity = categoryMapper.toEntity(categoria);
+        var entity = toEntity(categoria);
         var entityResponse = categoryRepository.save(entity);
 
-        return categoryMapper.toCategoryResponse(entityResponse);
+        return toCategoryResponse(entityResponse);
     }
 
     public CategoryResponse updateCategory(Long id, CategoryDTO categoryDTO) {
@@ -37,7 +38,7 @@ public class CategoryUseCase {
         entity.setDescription(categoryDTO.getDescription());
 
         Category entityResponse = categoryRepository.save(entity);
-        return categoryMapper.toCategoryResponse(entityResponse);
+        return toCategoryResponse(entityResponse);
     }
 
     public void deleteCategory(Long id) {
@@ -46,13 +47,13 @@ public class CategoryUseCase {
     }
 
     public CategoryResponse searchCategoryById(Long id) {
-        return categoryMapper.toCategoryResponse(getCategory(id));
+        return toCategoryResponse(getCategory(id));
     }
 
     public PaginationResponse<CategoryResponse> listCategories(Integer page, Integer limit, String sort) {
         var pageable = Pagination.getPageRequest(limit, page, sort, "id");
         var produtos = categoryRepository.findAll(pageable);
-        List<CategoryResponse> CategoryResponses = categoryMapper.toResponseList(produtos.getContent());
+        List<CategoryResponse> CategoryResponses = toResponseList(produtos.getContent());
         return new PaginationResponse<>().convertToResponse(new PageImpl(CategoryResponses, produtos.getPageable(), 0L));
     }
 

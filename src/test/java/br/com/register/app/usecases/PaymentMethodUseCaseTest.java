@@ -4,7 +4,6 @@ import br.com.register.app.entities.PaymentMethod;
 import br.com.register.app.repositories.PaymentMethodRepository;
 import br.com.register.webui.dtos.response.PaginationResponse;
 import br.com.register.webui.dtos.response.PaymentMethodResponse;
-import br.com.register.webui.mappers.PaymentMethodMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,8 +28,6 @@ public class PaymentMethodUseCaseTest {
     private PaymentMethodUseCase paymentMethodUseCase;
     @Mock
     private PaymentMethodRepository paymentMethodRepository;
-    @Mock
-    private PaymentMethodMapper paymentMethodMapper;
 
     @Test
     public void shouldSuccessfully_listPaymentMethod() {
@@ -52,7 +49,6 @@ public class PaymentMethodUseCaseTest {
         );
 
         when(paymentMethodRepository.findAll(pageable)).thenReturn(pagePaymentMethods);
-        when(paymentMethodMapper.toResponseList(paymentMethods)).thenReturn(responseList);
 
         PaginationResponse<PaymentMethodResponse> result = paymentMethodUseCase.listPaymentMethod(page, limit, sort);
 
@@ -64,7 +60,6 @@ public class PaymentMethodUseCaseTest {
         assertThat(result.getHasPrevious()).isFalse();
 
         verify(paymentMethodRepository).findAll(pageable);
-        verify(paymentMethodMapper).toResponseList(paymentMethods);
     }
 
     private PaymentMethod createPaymentMethod(Long id, String description, String type) {

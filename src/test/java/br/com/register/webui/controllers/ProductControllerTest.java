@@ -7,7 +7,6 @@ import br.com.register.webui.dtos.request.UpdateProductRequest;
 import br.com.register.webui.dtos.response.CategoryResponse;
 import br.com.register.webui.dtos.response.PaginationResponse;
 import br.com.register.webui.dtos.response.ProductResponse;
-import br.com.register.webui.mappers.ProductMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +18,8 @@ import org.springframework.http.ResponseEntity;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -32,8 +32,6 @@ public class ProductControllerTest {
     private ProductController productController;
     @Mock
     private ProductUseCase productUseCase;
-    @Mock
-    private ProductMapper productMapper;
 
     private ProductDTO productDTO;
     private ProductResponse productResponse;
@@ -68,8 +66,7 @@ public class ProductControllerTest {
         request.setCategoryId(1L);
         request.setImage("img.png");
 
-        when(productMapper.toProductDto(request)).thenReturn(productDTO);
-        when(productUseCase.registerProduct(productDTO)).thenReturn(productResponse);
+        when(productUseCase.registerProduct(any())).thenReturn(productResponse);
 
         ResponseEntity<ProductResponse> response = productController.registerProduct(request);
 
@@ -91,7 +88,6 @@ public class ProductControllerTest {
         updatedDto.setCategoryId(2L);
         updatedDto.setImage("img_updated.png");
 
-        when(productMapper.toProductDto(request)).thenReturn(updatedDto);
         when(productUseCase.updateProduct(1L, updatedDto)).thenReturn(productResponse);
 
         ResponseEntity<ProductResponse> response = productController.updateProduct(1L, request);

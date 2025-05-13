@@ -6,7 +6,6 @@ import br.com.register.webui.dtos.request.RegisterCategoryRequest;
 import br.com.register.webui.dtos.request.UpdateCategoryRequest;
 import br.com.register.webui.dtos.response.CategoryResponse;
 import br.com.register.webui.dtos.response.PaginationResponse;
-import br.com.register.webui.mappers.CategoryMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -29,7 +28,9 @@ import java.util.Set;
 import static br.com.register.errors.Errors.FIELD_REQUIRED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -41,8 +42,6 @@ public class CategoryControllerTest {
     private CategoryController categoryController;
     @Mock
     private CategoryUseCase categoryUseCase;
-    @Mock
-    private CategoryMapper categoryMapper;
 
     private Validator validator;
 
@@ -65,8 +64,7 @@ public class CategoryControllerTest {
         expectedResponse.setId(1L);
         expectedResponse.setDescription("Categoria Teste");
 
-        when(categoryMapper.toCategoryDto(request)).thenReturn(categoryDTO);
-        when(categoryUseCase.registerCategory(categoryDTO)).thenReturn(expectedResponse);
+        when(categoryUseCase.registerCategory(any())).thenReturn(expectedResponse);
 
         ResponseEntity<CategoryResponse> response = categoryController.registerCategory(request);
 
@@ -74,8 +72,7 @@ public class CategoryControllerTest {
         assertEquals(expectedResponse.getId(), response.getBody().getId());
         assertEquals(expectedResponse.getDescription(), response.getBody().getDescription());
 
-        verify(categoryMapper).toCategoryDto(request);
-        verify(categoryUseCase).registerCategory(categoryDTO);
+        verify(categoryUseCase, times(1)).registerCategory(any());
     }
 
     @Test
@@ -124,7 +121,6 @@ public class CategoryControllerTest {
         expectedResponse.setId(1L);
         expectedResponse.setDescription("Nova descrição");
 
-        when(categoryMapper.toCategoryDto(request)).thenReturn(categoryDTO);
         when(categoryUseCase.updateCategory(id, categoryDTO)).thenReturn(expectedResponse);
 
         ResponseEntity<CategoryResponse> response = categoryController.updateCategory(id, request);
@@ -133,7 +129,6 @@ public class CategoryControllerTest {
         assertEquals(expectedResponse.getId(), response.getBody().getId());
         assertEquals(expectedResponse.getDescription(), response.getBody().getDescription());
 
-        verify(categoryMapper).toCategoryDto(request);
         verify(categoryUseCase).updateCategory(id, categoryDTO);
     }
 

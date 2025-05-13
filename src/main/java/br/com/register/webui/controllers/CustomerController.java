@@ -1,13 +1,12 @@
 package br.com.register.webui.controllers;
 
 import br.com.register.app.usecases.CustomerUseCase;
-import br.com.register.webui.dtos.request.UpdateCustomerRequest;
 import br.com.register.webui.dtos.request.RegisterCustomerRequest;
+import br.com.register.webui.dtos.request.UpdateCustomerRequest;
 import br.com.register.webui.dtos.response.CustomerResponse;
 import br.com.register.webui.dtos.response.ErrorResponse;
 import br.com.register.webui.dtos.response.PaginationCustomerResponse;
 import br.com.register.webui.dtos.response.PaginationResponse;
-import br.com.register.webui.mappers.CustomerMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static br.com.register.errors.Errors.PAGE_MIN;
 import static br.com.register.errors.Errors.QUERY_PARAMS_REQUERIDO;
+import static br.com.register.webui.converters.CustomerConvert.toCustomerDto;
 import static br.com.register.webui.description.Descriptions.CPF_CUSTOMER;
 import static br.com.register.webui.description.Descriptions.ID;
 import static br.com.register.webui.description.Descriptions.LIMIT;
@@ -54,7 +54,6 @@ public class CustomerController {
     private static final String ASC_DESC = "ASC/DESC";
 
     private final CustomerUseCase customerUseCase;
-    private final CustomerMapper customerMapper;
 
     @Operation(summary = "Register customer")
     @ApiResponses(value = {
@@ -62,7 +61,7 @@ public class CustomerController {
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = CustomerResponse.class))})})
     @PostMapping
     public ResponseEntity<CustomerResponse> registerCustomer(@RequestBody @Valid RegisterCustomerRequest request) {
-        var response = customerUseCase.registerCustomer(customerMapper.toCustomerDto(request));
+        var response = customerUseCase.registerCustomer(toCustomerDto(request));
         return ResponseEntity.status(CREATED).body(response);
     }
 
@@ -77,7 +76,7 @@ public class CustomerController {
             final Long id,
             @RequestBody @Valid
             final UpdateCustomerRequest request) {
-        var customerDTO = customerMapper.toCustomerDto(request);
+        var customerDTO = toCustomerDto(request);
         return ResponseEntity.ok(customerUseCase.updateCustomer(id, customerDTO));
     }
 

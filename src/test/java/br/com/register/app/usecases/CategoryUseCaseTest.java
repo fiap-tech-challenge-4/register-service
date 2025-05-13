@@ -5,7 +5,6 @@ import br.com.register.app.exception.BusinessException;
 import br.com.register.app.repositories.CategoryRepository;
 import br.com.register.webui.dtos.CategoryDTO;
 import br.com.register.webui.dtos.response.CategoryResponse;
-import br.com.register.webui.mappers.CategoryMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,8 +36,6 @@ public class CategoryUseCaseTest {
     private CategoryUseCase categoryUseCase;
     @Mock
     private CategoryRepository categoryRepository;
-    @Mock
-    private CategoryMapper categoryMapper;
 
     private Category category;
     private CategoryDTO categoryDTO;
@@ -62,9 +58,7 @@ public class CategoryUseCaseTest {
 
     @Test
     public void testRegisterCategory() {
-        when(categoryMapper.toEntity(categoryDTO)).thenReturn(category);
-        when(categoryRepository.save(category)).thenReturn(category);
-        when(categoryMapper.toCategoryResponse(category)).thenReturn(categoryResponse);
+        when(categoryRepository.save(any())).thenReturn(category);
 
         var response = categoryUseCase.registerCategory(categoryDTO);
 
@@ -74,9 +68,8 @@ public class CategoryUseCaseTest {
 
     @Test
     public void testUpdateCategory() {
-        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
-        when(categoryRepository.save(category)).thenReturn(category);
-        when(categoryMapper.toCategoryResponse(category)).thenReturn(categoryResponse);
+        when(categoryRepository.findById(any())).thenReturn(Optional.of(category));
+        when(categoryRepository.save(any())).thenReturn(category);
 
         var updatedResponse = categoryUseCase.updateCategory(1L, categoryDTO);
 
@@ -86,7 +79,7 @@ public class CategoryUseCaseTest {
 
     @Test
     public void testDeleteCategory() {
-        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(categoryRepository.findById(any())).thenReturn(Optional.of(category));
 
         assertDoesNotThrow(() -> categoryUseCase.deleteCategory(1L));
         verify(categoryRepository, times(1)).delete(category);
@@ -95,7 +88,6 @@ public class CategoryUseCaseTest {
     @Test
     public void testSearchCategoryById() {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
-        when(categoryMapper.toCategoryResponse(category)).thenReturn(categoryResponse);
 
         var result = categoryUseCase.searchCategoryById(1L);
 
@@ -109,7 +101,6 @@ public class CategoryUseCaseTest {
         var page = new PageImpl<>(List.of(category), pageable, 1L);
 
         when(categoryRepository.findAll(any(Pageable.class))).thenReturn(page);
-        when(categoryMapper.toResponseList(anyList())).thenReturn(List.of(categoryResponse));
 
         var result = categoryUseCase.listCategories(0, 10, "asc");
 
@@ -119,7 +110,7 @@ public class CategoryUseCaseTest {
 
     @Test
     public void testGetCategoryThrowsException() {
-        when(categoryRepository.findById(99L)).thenReturn(Optional.empty());
+        when(categoryRepository.findById(any())).thenReturn(Optional.empty());
 
         var exception = assertThrows(BusinessException.class, () -> {
             categoryUseCase.searchCategoryById(99L);

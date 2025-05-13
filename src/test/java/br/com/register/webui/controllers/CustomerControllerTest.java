@@ -5,7 +5,6 @@ import br.com.register.webui.dtos.request.RegisterCustomerRequest;
 import br.com.register.webui.dtos.request.UpdateCustomerRequest;
 import br.com.register.webui.dtos.response.CustomerResponse;
 import br.com.register.webui.dtos.response.PaginationResponse;
-import br.com.register.webui.mappers.CustomerMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,8 +29,6 @@ public class CustomerControllerTest {
     private CustomerController customerController;
     @Mock
     private CustomerUseCase customerUseCase;
-    @Mock
-    private CustomerMapper customerMapper;
 
     private CustomerResponse customerResponse;
 

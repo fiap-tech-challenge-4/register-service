@@ -20,7 +20,7 @@ Ao centralizar esses cadastros em um único microsserviço, garantimos uma fonte
 
 ## Desenho Técnico Microsserviços
 <div align="center">
-  <img src="https://i.ibb.co/nqrh1Pcq/arquitetura-microservico.png" alt="Arquitetura de Microsserviços">
+  <img src="https://i.ibb.co/Nd3GbKZq/arquitetura-jpg.png" alt="Arquitetura de Microsserviços">
 </div>
 
 ## Modelo de Entidade e Relacionamento

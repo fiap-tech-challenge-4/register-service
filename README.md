@@ -23,6 +23,11 @@ Ao centralizar esses cadastros em um único microsserviço, garantimos uma fonte
   <img src="https://i.ibb.co/dsPzD37s/arquitetura.png" alt="Arquitetura de Microsserviços">
 </div>
 
+## Evidência de testes no SonarCloud
+<div align="center">
+  <img src="https://i.ibb.co/NgqkD0bT/register-service.jpg" alt="Arquitetura de Microsserviços">
+</div>
+
 ## Modelo de Entidade e Relacionamento
 
 <div align="center">
